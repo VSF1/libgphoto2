@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libgphoto2_port 2.5.32\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2025-02-22 11:30+0100\n"
+"POT-Creation-Date: 2026-03-22 14:39+0000\n"
 "PO-Revision-Date: 2025-10-07 21:29+0800\n"
 "Last-Translator: Tyson Tan <tysontanx@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -162,8 +162,13 @@ msgstr "无法查询设备的内核驱动程序。"
 
 #: libusb1/libusb1.c:512 usb/libusb.c:283
 #, c-format
-msgid "Could not claim interface %d (%s). Make sure no other program (%s) or kernel module (such as %s) is using the device and you have read/write access to the device."
-msgstr "无法获取接口 %d (%s) 的控制权。请确保没有其他程序 (%s) 或内核模块 (例如 %s) 正在使用该设备，并且您对该设备具有读/写访问权限。"
+msgid ""
+"Could not claim interface %d (%s). Make sure no other program (%s) or kernel "
+"module (such as %s) is using the device and you have read/write access to "
+"the device."
+msgstr ""
+"无法获取接口 %d (%s) 的控制权。请确保没有其他程序 (%s) 或内核模块 (例如 %s) "
+"正在使用该设备，并且您对该设备具有读/写访问权限。"
 
 #: libusb1/libusb1.c:523 usb/libusb.c:295
 msgid "MacOS PTPCamera service"
@@ -187,31 +192,38 @@ msgstr "无法重置 USB 端口 (%s)。"
 msgid "Could not reattach kernel driver of camera device."
 msgstr "无法重新连接相机设备的内核驱动程序。"
 
-#: libusb1/libusb1.c:1054 usb/libusb.c:621
+#: libusb1/libusb1.c:1057 usb/libusb.c:621
 #, c-format
 msgid "Could not set config %d/%d (%s)"
 msgstr "无法设置配置 %d/%d (%s)"
 
-#: libusb1/libusb1.c:1083 usb/libusb.c:652
+#: libusb1/libusb1.c:1086 usb/libusb.c:652
 #, c-format
 msgid "Could not set altsetting from %d to %d (%s)"
 msgstr "无法将替代设置从 %d 更改为 %d (%s)"
 
-#: libusb1/libusb1.c:1217 libusb1/libusb1.c:1309 usb/libusb.c:812
+#: libusb1/libusb1.c:1220 libusb1/libusb1.c:1312 usb/libusb.c:812
 #: usb/libusb.c:898
 #, c-format
-msgid "Could not find USB device (vendor 0x%x, product 0x%x). Make sure this device is connected to the computer."
-msgstr "无法找到 USB 设备 (vendor 0x%x，product 0x%x)。请确保此设备已连接到计算机。"
+msgid ""
+"Could not find USB device (vendor 0x%x, product 0x%x). Make sure this device "
+"is connected to the computer."
+msgstr ""
+"无法找到 USB 设备 (vendor 0x%x，product 0x%x)。请确保此设备已连接到计算机。"
 
-#: libusb1/libusb1.c:1248 usb/libusb.c:741
+#: libusb1/libusb1.c:1251 usb/libusb.c:741
 #, c-format
 msgid "The supplied vendor or product id (0x%x,0x%x) is not valid."
 msgstr "提供的 vendor ID 或 product ID (0x%x、0x%x) 无效。"
 
-#: libusb1/libusb1.c:1598 usb/libusb.c:1191
+#: libusb1/libusb1.c:1601 usb/libusb.c:1191
 #, c-format
-msgid "Could not find USB device (class 0x%x, subclass 0x%x, protocol 0x%x). Make sure this device is connected to the computer."
-msgstr "无法找到 USB 设备 (类 0x%x，子类 0x%x，协议 0x%x)。请确保此设备已连接到计算机。"
+msgid ""
+"Could not find USB device (class 0x%x, subclass 0x%x, protocol 0x%x). Make "
+"sure this device is connected to the computer."
+msgstr ""
+"无法找到 USB 设备 (类 0x%x，子类 0x%x，协议 0x%x)。请确保此设备已连接到计算"
+"机。"
 
 #: ptpip/ptpip.c:161
 msgid "PTP/IP Connection"
@@ -221,90 +233,90 @@ msgstr "PTP/IP 连接"
 msgid "IP Connection"
 msgstr "IP 连接"
 
-#: serial/unix.c:210
+#: serial/unix.c:215
 #, c-format
 msgid "Could not lock device '%s'"
 msgstr "无法锁定设备“%s”"
 
-#: serial/unix.c:220 usbdiskdirect/linux.c:79
+#: serial/unix.c:225 usbdiskdirect/linux.c:79
 #, c-format
 msgid "Device '%s' is locked by pid %d"
 msgstr "设备“%s”被 PID 为 %d 的进程锁定。"
 
-#: serial/unix.c:223 usbdiskdirect/linux.c:82
+#: serial/unix.c:228 usbdiskdirect/linux.c:82
 #, c-format
 msgid "Device '%s' could not be locked (dev_lock returned %d)"
 msgstr "设备“%s”无法锁定 (dev_lock 返回 %d)"
 
-#: serial/unix.c:252
+#: serial/unix.c:257
 #, c-format
 msgid "Device '%s' could not be unlocked."
 msgstr "设备“%s”无法解除锁定。"
 
-#: serial/unix.c:264 usbdiskdirect/linux.c:111
+#: serial/unix.c:269 usbdiskdirect/linux.c:111
 #, c-format
 msgid "Device '%s' could not be unlocked as it is locked by pid %d."
 msgstr "设备“%s”无法解除锁定，因为它被 PID 为 %d 的进程锁定。"
 
-#: serial/unix.c:268 usbdiskdirect/linux.c:115
+#: serial/unix.c:273 usbdiskdirect/linux.c:115
 #, c-format
 msgid "Device '%s' could not be unlocked (dev_unlock returned %d)"
 msgstr "设备“%s”无法解除锁定 (dev_unlock 返回 %d)"
 
-#: serial/unix.c:311
+#: serial/unix.c:316
 #, c-format
 msgid "Serial Port %i"
 msgstr "串口 %i"
 
-#: serial/unix.c:324
+#: serial/unix.c:329
 msgid "Serial Port Device"
 msgstr "串口设备"
 
-#: serial/unix.c:400
+#: serial/unix.c:405
 #, c-format
 msgid "Failed to open '%s' (%s)."
 msgstr "打开“%s”失败 (%s)。"
 
-#: serial/unix.c:420
+#: serial/unix.c:425
 #, c-format
 msgid "Could not close '%s' (%s)."
 msgstr "无法关闭“%s”(%s)。"
 
-#: serial/unix.c:476
+#: serial/unix.c:481
 #, c-format
 msgid "Could not write to port (%s)"
 msgstr "无法写入端口 (%s)"
 
-#: serial/unix.c:551
+#: serial/unix.c:556
 msgid "Parity error."
 msgstr "奇偶校验错误。"
 
-#: serial/unix.c:555
+#: serial/unix.c:560
 #, c-format
 msgid "Unexpected parity response sequence 0xff 0x%02x."
 msgstr "不符合预期的奇偶校验响应序列 0xff 0x%02x。"
 
-#: serial/unix.c:598
+#: serial/unix.c:619
 #, c-format
 msgid "Unknown pin %i."
 msgstr "未知针脚 %i。"
 
-#: serial/unix.c:620
+#: serial/unix.c:641
 #, c-format
 msgid "Could not get level of pin %i (%s)."
 msgstr "无法获取针脚 %i 的电平 (%s)。"
 
-#: serial/unix.c:656
+#: serial/unix.c:677
 #, c-format
 msgid "Could not set level of pin %i to %i (%s)."
 msgstr "无法将针脚 %i 的电平设置为 %i (%s)。"
 
-#: serial/unix.c:683
+#: serial/unix.c:704
 #, c-format
 msgid "Could not flush '%s' (%s)."
 msgstr "无法刷新“%s”(%s)。"
 
-#: serial/unix.c:778
+#: serial/unix.c:799
 #, c-format
 msgid "Could not set the baudrate to %d"
 msgstr "无法将波特率设置为 %d"
@@ -423,8 +435,11 @@ msgstr "无法发送 SCSI 命令到：“%s”(%m)。"
 #~ msgstr "读消息"
 
 #, fuzzy
-#~ msgid "USB device (vendor 0x%x, product 0x%x) is a mass storage device, and might not function with gphoto2. Reference: %s"
-#~ msgstr "无法找到 USB 设备 (供应商 0x%x、产品 0x%x)。确信该设备已连接到计算机。"
+#~ msgid ""
+#~ "USB device (vendor 0x%x, product 0x%x) is a mass storage device, and "
+#~ "might not function with gphoto2. Reference: %s"
+#~ msgstr ""
+#~ "无法找到 USB 设备 (供应商 0x%x、产品 0x%x)。确信该设备已连接到计算机。"
 
 #~ msgid "open"
 #~ msgstr "打开"

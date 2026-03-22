@@ -5,16 +5,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libgphoto2_port-2.5.32\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2025-02-22 11:30+0100\n"
+"POT-Creation-Date: 2026-03-22 14:39+0000\n"
 "PO-Revision-Date: 2025-10-09 11:21+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: Arabic <(nothing)>\n"
 "Language: ar\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100 >= 3 && n%100<=10 ? 3 : n%100 >= 11 && n%100<=99 ? 4 : 5;\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100 >= 3 "
+"&& n%100<=10 ? 3 : n%100 >= 11 && n%100<=99 ? 4 : 5;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
 #: libgphoto2_port/gphoto2-port-info-list.c:454
@@ -158,8 +159,13 @@ msgstr "لا أستطيع الاستعلام عن برنامج تشغيل الن
 
 #: libusb1/libusb1.c:512 usb/libusb.c:283
 #, c-format
-msgid "Could not claim interface %d (%s). Make sure no other program (%s) or kernel module (such as %s) is using the device and you have read/write access to the device."
-msgstr "لا أستطيع المطالبة بالواجهة %d (%s). تأكد أن لا برنامج آخر (%s) أو وحدة نواة (مثل %s) يستخدم الجهاز وأن لديك صلاحيات القراءة/الكتابة إليه."
+msgid ""
+"Could not claim interface %d (%s). Make sure no other program (%s) or kernel "
+"module (such as %s) is using the device and you have read/write access to "
+"the device."
+msgstr ""
+"لا أستطيع المطالبة بالواجهة %d (%s). تأكد أن لا برنامج آخر (%s) أو وحدة نواة "
+"(مثل %s) يستخدم الجهاز وأن لديك صلاحيات القراءة/الكتابة إليه."
 
 #: libusb1/libusb1.c:523 usb/libusb.c:295
 msgid "MacOS PTPCamera service"
@@ -183,31 +189,39 @@ msgstr "لا أستطيع إعادة ضبط منفذ USB (%s)."
 msgid "Could not reattach kernel driver of camera device."
 msgstr "لا أستطيع إعادة إرفاق برنامج تشغيل النواة لجهاز الكاميرا."
 
-#: libusb1/libusb1.c:1054 usb/libusb.c:621
+#: libusb1/libusb1.c:1057 usb/libusb.c:621
 #, c-format
 msgid "Could not set config %d/%d (%s)"
 msgstr "لا أستطيع ضبط تشكيلة %d/%d (%s)"
 
-#: libusb1/libusb1.c:1083 usb/libusb.c:652
+#: libusb1/libusb1.c:1086 usb/libusb.c:652
 #, c-format
 msgid "Could not set altsetting from %d to %d (%s)"
 msgstr "لا أستطيع ضبط الإعداد البديل من %d إلى %d (%s)"
 
-#: libusb1/libusb1.c:1217 libusb1/libusb1.c:1309 usb/libusb.c:812
+#: libusb1/libusb1.c:1220 libusb1/libusb1.c:1312 usb/libusb.c:812
 #: usb/libusb.c:898
 #, c-format
-msgid "Could not find USB device (vendor 0x%x, product 0x%x). Make sure this device is connected to the computer."
-msgstr "لا أستطيع إيجاد جهاز USB (المورد 0x%x، المنتج 0x%x). تأكد أن هذا الجهاز موصول بـ **الحاسوب**."
+msgid ""
+"Could not find USB device (vendor 0x%x, product 0x%x). Make sure this device "
+"is connected to the computer."
+msgstr ""
+"لا أستطيع إيجاد جهاز USB (المورد 0x%x، المنتج 0x%x). تأكد أن هذا الجهاز "
+"موصول بـ **الحاسوب**."
 
-#: libusb1/libusb1.c:1248 usb/libusb.c:741
+#: libusb1/libusb1.c:1251 usb/libusb.c:741
 #, c-format
 msgid "The supplied vendor or product id (0x%x,0x%x) is not valid."
 msgstr "معرّف المورد أو المنتج المزود (0x%x,0x%x) غير صالح."
 
-#: libusb1/libusb1.c:1598 usb/libusb.c:1191
+#: libusb1/libusb1.c:1601 usb/libusb.c:1191
 #, c-format
-msgid "Could not find USB device (class 0x%x, subclass 0x%x, protocol 0x%x). Make sure this device is connected to the computer."
-msgstr "لا أستطيع إيجاد جهاز USB (الصنف 0x%x، الصنف الفرعي 0x%x، البروتوكول 0x%x). تأكد أن هذا الجهاز موصول بـ **الحاسوب**."
+msgid ""
+"Could not find USB device (class 0x%x, subclass 0x%x, protocol 0x%x). Make "
+"sure this device is connected to the computer."
+msgstr ""
+"لا أستطيع إيجاد جهاز USB (الصنف 0x%x، الصنف الفرعي 0x%x، البروتوكول 0x%x). "
+"تأكد أن هذا الجهاز موصول بـ **الحاسوب**."
 
 #: ptpip/ptpip.c:161
 msgid "PTP/IP Connection"
@@ -217,90 +231,90 @@ msgstr "اتصال PTP/IP"
 msgid "IP Connection"
 msgstr "اتصال IP"
 
-#: serial/unix.c:210
+#: serial/unix.c:215
 #, c-format
 msgid "Could not lock device '%s'"
 msgstr "لا أستطيع قفل الجهاز '%s'"
 
-#: serial/unix.c:220 usbdiskdirect/linux.c:79
+#: serial/unix.c:225 usbdiskdirect/linux.c:79
 #, c-format
 msgid "Device '%s' is locked by pid %d"
 msgstr "الجهاز '%s' مقفول بمعرّف العملية %d"
 
-#: serial/unix.c:223 usbdiskdirect/linux.c:82
+#: serial/unix.c:228 usbdiskdirect/linux.c:82
 #, c-format
 msgid "Device '%s' could not be locked (dev_lock returned %d)"
 msgstr "لا أستطيع قفل الجهاز '%s' (أعاد dev_lock القيمة %d)"
 
-#: serial/unix.c:252
+#: serial/unix.c:257
 #, c-format
 msgid "Device '%s' could not be unlocked."
 msgstr "لا أستطيع فك قفل الجهاز '%s'."
 
-#: serial/unix.c:264 usbdiskdirect/linux.c:111
+#: serial/unix.c:269 usbdiskdirect/linux.c:111
 #, c-format
 msgid "Device '%s' could not be unlocked as it is locked by pid %d."
 msgstr "لا أستطيع فك قفل الجهاز '%s' لأنه مقفول بمعرّف العملية %d."
 
-#: serial/unix.c:268 usbdiskdirect/linux.c:115
+#: serial/unix.c:273 usbdiskdirect/linux.c:115
 #, c-format
 msgid "Device '%s' could not be unlocked (dev_unlock returned %d)"
 msgstr "لا أستطيع فك قفل الجهاز '%s' (أعاد dev_unlock القيمة %d)"
 
-#: serial/unix.c:311
+#: serial/unix.c:316
 #, c-format
 msgid "Serial Port %i"
 msgstr "منفذ تسلسلي %i"
 
-#: serial/unix.c:324
+#: serial/unix.c:329
 msgid "Serial Port Device"
 msgstr "جهاز منفذ تسلسلي"
 
-#: serial/unix.c:400
+#: serial/unix.c:405
 #, c-format
 msgid "Failed to open '%s' (%s)."
 msgstr "فشل فتح '%s' (%s)."
 
-#: serial/unix.c:420
+#: serial/unix.c:425
 #, c-format
 msgid "Could not close '%s' (%s)."
 msgstr "لا أستطيع إغلاق '%s' (%s)."
 
-#: serial/unix.c:476
+#: serial/unix.c:481
 #, c-format
 msgid "Could not write to port (%s)"
 msgstr "لا أستطيع الكتابة إلى المنفذ (%s)"
 
-#: serial/unix.c:551
+#: serial/unix.c:556
 msgid "Parity error."
 msgstr "خطأ في التكافؤ."
 
-#: serial/unix.c:555
+#: serial/unix.c:560
 #, c-format
 msgid "Unexpected parity response sequence 0xff 0x%02x."
 msgstr "تسلسل استجابة التكافؤ غير متوقع 0xff 0x%02x."
 
-#: serial/unix.c:598
+#: serial/unix.c:619
 #, c-format
 msgid "Unknown pin %i."
 msgstr "دبوس %i غير معروف."
 
-#: serial/unix.c:620
+#: serial/unix.c:641
 #, c-format
 msgid "Could not get level of pin %i (%s)."
 msgstr "لا أستطيع الحصول على مستوى الدبوس %i (%s)."
 
-#: serial/unix.c:656
+#: serial/unix.c:677
 #, c-format
 msgid "Could not set level of pin %i to %i (%s)."
 msgstr "لا أستطيع ضبط مستوى الدبوس %i إلى %i (%s)."
 
-#: serial/unix.c:683
+#: serial/unix.c:704
 #, c-format
 msgid "Could not flush '%s' (%s)."
 msgstr "لا أستطيع تفريغ '%s' (%s)."
 
-#: serial/unix.c:778
+#: serial/unix.c:799
 #, c-format
 msgid "Could not set the baudrate to %d"
 msgstr "لا أستطيع ضبط معدل الباود إلى %d"

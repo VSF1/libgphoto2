@@ -43,6 +43,8 @@
 .dirstamp
 Makefile
 Makefile.in
+*.log
+*.stamp
 
 /ABOUT-NLS
 /aclocal.m4
