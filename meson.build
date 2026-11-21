@@ -1,5 +1,5 @@
 project('libgphoto2', 'c',
-  version : '2.5.33.1',
+  version : '2.5.34.1',
   meson_version : '>= 1.4.0',
   default_options : [
     'buildtype=debugoptimized',
@@ -165,6 +165,8 @@ int main(int argc, char **argv)
     libjpeg_dep = disabler()
   else
     add_project_arguments('-DHAVE_LIBJPEG=1', language: 'c')
+
+    add_project_arguments('-DJPEG_SIZE=unsigned long', language: 'c')
   endif
 endif
 

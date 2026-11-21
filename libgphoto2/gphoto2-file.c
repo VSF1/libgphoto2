@@ -311,6 +311,12 @@ gp_file_slurp (CameraFile *file, char *data,
  * @param size
  * @return a gphoto2 error code.
  *
+ * On success, the #file takes over the ownership of data, which needs
+ * to be allocated with malloc(), and frees it when no longer needed.
+ *
+ * On failure, data is still owned by the caller and needs to be free()d
+ * to avoid memory leaks.
+ *
  **/
 int
 gp_file_set_data_and_size (CameraFile *file, char *data,
@@ -325,7 +331,7 @@ gp_file_set_data_and_size (CameraFile *file, char *data,
 		file->size = size;
 		break;
 	case GP_FILE_ACCESSTYPE_FD: {
-		unsigned int curwritten = 0;
+		unsigned long int curwritten = 0;
 
 		/* truncate */
 		if (-1 == lseek (file->fd, 0, SEEK_SET)) {
@@ -432,16 +438,23 @@ gp_file_get_data_and_size (CameraFile *file, const char **data,
 		if (size) *size = offset;
 		if (!data) /* just the size... */
 			return GP_OK;
+		/* malloc(0) might return NULL, which isn't a lack of memory */
+		if (!offset) {
+			*data = NULL;
+			return GP_OK;
+		}
 		C_MEM (*data = malloc (offset));
 		while (curread < offset) {
 			ssize_t res = read (file->fd, (char*)((*data)+curread), offset-curread);
 			if (res == -1) {
 				free ((char*)*data);
+				*data = NULL;
 				GP_LOG_E ("Encountered error %d reading.", errno);
 				return GP_ERROR_IO_READ;
 			}
 			if (res == 0) {
 				free ((char*)*data);
+				*data = NULL;
 				GP_LOG_E ("No progress during reading.");
 				return GP_ERROR_IO_READ;
 			}
@@ -453,7 +466,7 @@ gp_file_get_data_and_size (CameraFile *file, const char **data,
 		uint64_t	xsize = 0;
 		int		ret;
 
-		C_PARAMS (file->handler->read);
+		C_PARAMS (file->handler->size);
 		ret = file->handler->size (file->private, &xsize);
 		if (ret != GP_OK) {
 			GP_LOG_E ("Encountered error %d querying size().", ret);
@@ -462,14 +475,24 @@ gp_file_get_data_and_size (CameraFile *file, const char **data,
 		if (size) *size = xsize;
 		if (!data) /* just the size... */
 			return GP_OK;
+		C_PARAMS (file->handler->read);
+		/* malloc(0) might return NULL, which isn't a lack of memory */
+		if (!xsize) {
+			*data = NULL;
+			return GP_OK;
+		}
 		C_MEM (*data = malloc (xsize));
 		ret = file->handler->read (file->private, (unsigned char*)*data, &xsize);
 		if (ret != GP_OK) {
 			GP_LOG_E ("Encountered error %d getting data().", ret);
 			free ((char*)*data);
 			*data = NULL;
+			return ret;
 		}
-		return ret;
+		/* The handler might have read less than its size() reported
+		 * (but never report more than the allocated buffer holds) */
+		if (size && (xsize < *size)) *size = xsize;
+		return GP_OK;
 	}
 	default:
 		GP_LOG_E ("Unknown file access type %d", file->accesstype);
@@ -611,7 +634,7 @@ int
 gp_file_open (CameraFile *file, const char *filename)
 {
 	FILE *fp;
-	char *name, *dot;
+	const char *name, *dot;
 	long size, size_read;
 	int  i;
 	struct stat s;
@@ -907,8 +930,8 @@ gp_file_get_name (CameraFile *file, const char **name)
 int
 gp_file_get_name_by_type (CameraFile *file, const char *basename, CameraFileType type, char **newname)
 {
-	char *prefix = NULL, *s, *new, *slash = NULL;
-	const char *suffix = NULL;
+	char *prefix = NULL, *new;
+	const char *suffix = NULL, *s, *slash = NULL;
 	int i;
 
 	C_PARAMS (file && basename && newname);

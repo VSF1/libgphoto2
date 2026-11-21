@@ -392,17 +392,20 @@ gp_widget_set_value (CameraWidget *widget, const void *value)
 		return (GP_OK);
 	case GP_WIDGET_MENU:
 	case GP_WIDGET_RADIO:
-	case GP_WIDGET_TEXT:
+	case GP_WIDGET_TEXT: {
+		char *value_string;
+
 		GP_LOG_D ("Setting value of widget '%s' to '%s'...",
 			widget->label, (char*) value);
-		if (widget->value_string) {
-			if (strcmp (widget->value_string, (char*) value))
-				widget->changed = 1;
-			free (widget->value_string);
-		} else
+		/* Copy the new value before freeing the current one, since
+		 * it might point to it (e.g. as returned by gp_widget_get_value) */
+		C_MEM (value_string = strdup ((char*)value));
+		if (!widget->value_string || strcmp (widget->value_string, value_string))
 			widget->changed = 1;
-		C_MEM (widget->value_string = strdup ((char*)value));
+		free (widget->value_string);
+		widget->value_string = value_string;
 		return (GP_OK);
+	}
 	case GP_WIDGET_RANGE:
 		if (widget->value_float != *((float*)value)) {
 			widget->value_float  = *((float*)value);
@@ -760,6 +763,7 @@ gp_widget_get_range (CameraWidget *range, float *min, float *max,
 int
 gp_widget_add_choice (CameraWidget *widget, const char *choice)
 {
+	char **choices;
 	int i;
 
 	C_PARAMS (widget && choice);
@@ -770,7 +774,10 @@ gp_widget_add_choice (CameraWidget *widget, const char *choice)
 		if (!strcmp(widget->choice[i],choice))
 			return GP_OK;
 
-	C_MEM (widget->choice = realloc (widget->choice, sizeof(char*)*(widget->choice_count+1)));
+	/* Assigned only on success, since a failed realloc leaves the
+	 * original memory intact (and still owned by the widget) */
+	C_MEM (choices = realloc (widget->choice, sizeof(char*)*(widget->choice_count+1)));
+	widget->choice = choices;
 	C_MEM (widget->choice[widget->choice_count] = strdup(choice));
 	widget->choice_count += 1;
 	return (GP_OK);
@@ -809,7 +816,7 @@ gp_widget_get_choice (CameraWidget *widget, int choice_number,
 	C_PARAMS (widget && choice);
 	C_PARAMS ((widget->type == GP_WIDGET_RADIO) ||
 		  (widget->type == GP_WIDGET_MENU));
-	C_PARAMS (choice_number < widget->choice_count);
+	C_PARAMS ((choice_number >= 0) && (choice_number < widget->choice_count));
 
 	*choice = widget->choice[choice_number];
 	return (GP_OK);
