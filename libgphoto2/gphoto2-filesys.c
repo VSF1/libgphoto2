@@ -114,6 +114,8 @@ get_time_from_exif_tag(ExifEntry *e) {
 	ts.tm_min  = atoi ((char*)(e->data + 14));
 	ts.tm_sec  = atoi ((char*)(e->data + 17));
 
+	/* Let mktime() figure out whether DST was in effect at the time */
+	ts.tm_isdst = -1;
 	return mktime (&ts);
 }
 
@@ -1297,10 +1299,17 @@ gp_filesystem_put_file (CameraFilesystem *fs,
 	/* Upload the file */
 	CR (fs->put_file_func (fs, folder, filename, type, file, fs->data, context));
 	/* And upload it to internal structure too */
-	ret = append_file (fs, f, filename, file, context);
-	if (type != GP_FILE_TYPE_NORMAL) /* FIXME perhaps check before append_file? */
-		return GP_OK;
-	return ret;
+	if (type != GP_FILE_TYPE_NORMAL) {
+		/*
+		 * Only list the file, append_file() would cache the data as
+		 * the normal file, e.g. serving a preview in its place.
+		 */
+		ret = internal_append (fs, f, filename, context);
+		if (ret == GP_ERROR_FILE_EXISTS)
+			ret = GP_OK;
+		return ret;
+	}
+	return append_file (fs, f, filename, file, context);
 }
 
 /**
@@ -1404,10 +1413,10 @@ static int
 gp_filesystem_scan (CameraFilesystem *fs, const char *folder,
 		    const char *filename, GPContext *context)
 {
-	int count, x;
+	int count, x, ret;
 	CameraList *list;
 	const char *name;
-	char path[128];
+	char *path;
 
 	GP_LOG_D ("Scanning %s for %s...", folder, filename);
 
@@ -1430,11 +1439,16 @@ gp_filesystem_scan (CameraFilesystem *fs, const char *folder,
 	CL (count = gp_list_count (list), list);
 	for (x = 0; x < count; x++) {
 		CL (gp_list_get_name (list, x, &name), list);
-		strncpy (path, folder, sizeof (path));
-		if (path[strlen (path) - 1] != '/')
-			strncat (path, "/", sizeof (path) - strlen (path) - 1);
-		strncat (path, name, sizeof (path) - strlen (path) - 1);
-		CL (gp_filesystem_scan (fs, path, filename, context), list);
+		path = aprintf ("%s%s%s", folder,
+				(folder[strlen (folder) - 1] == '/') ? "" : "/",
+				name);
+		if (!path) {
+			gp_list_free (list);
+			return GP_ERROR_NO_MEMORY;
+		}
+		ret = gp_filesystem_scan (fs, path, filename, context);
+		free (path);
+		CL (ret, list);
 	}
 	gp_list_free (list);
 	return (GP_OK);

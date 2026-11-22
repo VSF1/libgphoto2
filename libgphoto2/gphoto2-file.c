@@ -526,7 +526,12 @@ gp_file_save (CameraFile *file, const char *filename)
 			unlink (filename);
 			return GP_ERROR;
 		}
-		fclose (fp);
+		/* Writing the buffered data might fail too */
+		if (fclose (fp)) {
+			GP_LOG_E ("Could not finish writing '%s' (error %d).", filename, errno);
+			unlink (filename);
+			return GP_ERROR;
+		}
 		break;
 	case GP_FILE_ACCESSTYPE_FD: {
 		char *data;
@@ -573,7 +578,12 @@ gp_file_save (CameraFile *file, const char *filename)
 			curread += res;
 		}
 		free (data);
-		fclose (fp);
+		/* Writing the buffered data might fail too */
+		if (fclose (fp)) {
+			GP_LOG_E ("Could not finish writing '%s' (error %d).", filename, errno);
+			unlink (filename);
+			return GP_ERROR;
+		}
 		break;
 	}
 	default:
@@ -703,7 +713,7 @@ gp_file_open (CameraFile *file, const char *filename)
 			* Note: This should probably use GP_MIME_UNKNOWN instead
 			* of returning a non-standard type.
 			*/
-			sprintf(file->mime_type, "image/%s", dot + 1);
+			snprintf(file->mime_type, sizeof(file->mime_type), "image/%s", dot + 1);
 	} else {
 		/*
 		* Damn, no filename suffix...
@@ -773,9 +783,10 @@ gp_file_copy (CameraFile *destination, CameraFile *source)
 	    (source->accesstype == GP_FILE_ACCESSTYPE_MEMORY)) {
 		free (destination->data);
 		destination->data = NULL;
-		destination->size = source->size;
+		destination->size = 0;
 		C_MEM (destination->data = malloc (sizeof (char) * source->size));
 		memcpy (destination->data, source->data, source->size);
+		destination->size = source->size;
 		return (GP_OK);
 	}
 	if (	(destination->accesstype == GP_FILE_ACCESSTYPE_MEMORY) &&
@@ -786,6 +797,7 @@ gp_file_copy (CameraFile *destination, CameraFile *source)
 
 		free (destination->data);
 		destination->data = NULL;
+		destination->size = 0;
 
 		if (-1 == lseek (source->fd, 0, SEEK_END)) {
 			if (errno == EBADF) return GP_ERROR_IO;
@@ -802,22 +814,24 @@ gp_file_copy (CameraFile *destination, CameraFile *source)
 			GP_LOG_E ("Encountered error %d lseekin to CUR.", errno);
 			return GP_ERROR_IO_READ;
 		}
-		destination->size = offset;
 		C_MEM (destination->data = malloc (offset));
 		while (curread < offset) {
 			ssize_t res = read (source->fd, destination->data+curread, offset-curread);
 			if (res == -1) {
 				free (destination->data);
+				destination->data = NULL;
 				GP_LOG_E ("Encountered error %d reading.", errno);
 				return GP_ERROR_IO_READ;
 			}
 			if (res == 0) {
 				free (destination->data);
+				destination->data = NULL;
 				GP_LOG_E ("No progress during reading.");
 				return GP_ERROR_IO_READ;
 			}
 			curread += res;
 		}
+		destination->size = offset;
 		return GP_OK;
 	}
 	if (	(destination->accesstype == GP_FILE_ACCESSTYPE_FD) &&
@@ -878,7 +892,10 @@ gp_file_copy (CameraFile *destination, CameraFile *source)
 		uint64_t	xsize = source->size;
 		unsigned long curwritten = 0;
 
-		destination->handler->size (destination->private, &xsize);
+		C_PARAMS (destination->handler->write);
+		/* its result isn't used, and write-only handlers might lack it */
+		if (destination->handler->size)
+			destination->handler->size (destination->private, &xsize);
 		while (curwritten < source->size) {
 			uint64_t	tmpsize = source->size - curwritten;
 			int res = destination->handler->write (destination->private, source->data+curwritten, &tmpsize);
@@ -1083,10 +1100,15 @@ gp_file_detect_mime_type (CameraFile *file)
 		off_t	offset;
 		int	res;
 
-		offset = lseek (file->fd, 0, SEEK_SET);
+		/* Remember the current position to restore it afterwards */
+		offset = lseek (file->fd, 0, SEEK_CUR);
+		lseek (file->fd, 0, SEEK_SET);
 		res = read (file->fd, data, sizeof(data));
-		if (res == -1)
+		if (res == -1) {
+			if (offset != -1)
+				lseek (file->fd, offset, SEEK_SET);
 			return GP_ERROR_IO_READ;
+		}
 		/* image/tiff */
 		if ((res >= 5) && !memcmp (data, TIFF_SOI_MARKER, 5))
 			CHECK_RESULT (gp_file_set_mime_type (file, GP_MIME_TIFF))
@@ -1096,7 +1118,8 @@ gp_file_detect_mime_type (CameraFile *file)
 			CHECK_RESULT (gp_file_set_mime_type (file, GP_MIME_JPEG))
 		else
 			CHECK_RESULT (gp_file_set_mime_type (file, GP_MIME_RAW));
-		lseek (file->fd, offset, SEEK_SET);
+		if (offset != -1)
+			lseek (file->fd, offset, SEEK_SET);
 		break;
 	}
 	default:
